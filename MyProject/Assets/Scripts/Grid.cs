@@ -15,6 +15,7 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
+        int x = 0;
         for(int i = 0; i < columnCount; i++)
         {
             for(int j = 0; j < rowCount; j++)
@@ -22,6 +23,8 @@ public class Grid : MonoBehaviour
                 GameObject temp = Instantiate(Ground);
                 temp.transform.parent = this.transform;
                 temp.transform.position = new Vector3(i * groundSizeX - (groundSizeX * columnCount/2), j * groundSizeY - (groundSizeY * rowCount / 2), 0);
+                temp.GetComponent<Ground>().id = x;
+                x++;
             }
         }
     }

@@ -7,6 +7,7 @@ public class Ground : MonoBehaviour
     [SerializeField] private GameObject mask;
     private bool playerOn = false;
     private GameObject player;
+    public int id = 0;
 
     void Start()
     {
@@ -16,31 +17,31 @@ public class Ground : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player != null)
+        if(player != null)
         {
             if (player.GetComponent<Player>().standingGround != this)
             {
-                playerOn = false;
+                mask.SetActive(false);
+                player = null;
             }
-        }
-
-        if (!playerOn)
-        {
-            mask.SetActive(false);
-            player = null;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.gameObject.CompareTag("player"))
-        {
-            return;
-        }
-        else
+        if (collision.gameObject.CompareTag("player"))
         {
             player = collision.gameObject;
-            playerOn = true;
+            mask.SetActive(true);
+            player.GetComponent<Player>().standingGround = this;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("player"))
+        {
+            player = collision.gameObject;
             mask.SetActive(true);
             player.GetComponent<Player>().standingGround = this;
         }
@@ -50,7 +51,12 @@ public class Ground : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("player"))
         {
-            playerOn = false;
+            if(player != null)
+            {
+                player.GetComponent<Player>().standingGround = null;
+                mask.SetActive(false);
+                player = null;
+            }
         }
     }
 }
