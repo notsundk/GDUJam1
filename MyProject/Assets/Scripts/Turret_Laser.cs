@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret_Pistol : Turret
+public class Turret_Laser : Turret
 {
-    // Start is called before the first frame update
     public GameObject bullet;
     public override void Shoot()
     {
@@ -27,17 +26,14 @@ public class Turret_Pistol : Turret
 
         if (target != null)
         {
-            Vector3 bv = target.transform.position - this.transform.position;
-            bv.Normalize();
-
+          
             float rotZ = this.transform.rotation.eulerAngles.z;
             GameObject tempBullet = Instantiate(bullet);
             tempBullet.transform.rotation = Quaternion.Euler(0, 0, rotZ + 90);
             tempBullet.transform.position = this.transform.position;
-            tempBullet.GetComponent<TurretBullet>().dmg = data.atk;
-            bv *= tempBullet.GetComponent<TurretBullet>().bulletSpeed;
-            tempBullet.GetComponent<Rigidbody2D>().velocity = bv;
+            tempBullet.GetComponent<Bullet_Laser>().dmg = data.atk;
+            
         }
-        
+
     }
 }

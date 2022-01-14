@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fae259fbb1d4fa42900eb658e1dfdd7, type: 3}
-  m_Name: Turret_Pistol_Data
+  m_Name: Turret_Sniper
   m_EditorClassIdentifier: 
-  hp: 2
-  atk: 1
-  cost: 10
-  range: 4
-  atkInterval: 0.5
+  hp: 5
+  atk: 8
+  cost: 25
+  range: 15
+  atkInterval: 1.5
