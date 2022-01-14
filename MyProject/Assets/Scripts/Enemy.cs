@@ -5,15 +5,22 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public EnemyData data;
-    public int hp;
-    public int atk;
-    public float movespeed;
-    public GameObject target;
+    [HideInInspector] public float hp;
+    [HideInInspector] public float atk;
+    [HideInInspector] public float movespeed;
+    private float originalMovespeed;
+    [HideInInspector] public GameObject target;
     Rigidbody2D rb;
 
     float meleeTimer = 0;
     bool meleeUp = true;
     public float attackInterval;
+
+    public bool stunned = false;
+    private float stunTimer = 0;
+
+    public bool slowed = false;
+    private float slowTimer = 0;
 
     void Start()
     {
@@ -22,12 +29,37 @@ public class Enemy : MonoBehaviour
         movespeed = data.movespeed;
         target = GameObject.FindGameObjectWithTag("spaceship");
         rb = GetComponent<Rigidbody2D>();
+        originalMovespeed = movespeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Attack();
+        if(!stunned)
+            Attack();
+        else
+            stunTimer += Time.deltaTime;
+
+        if (stunTimer > 0.25)
+        {
+            stunned = false;
+            stunTimer = 0;
+        }
+
+        if (slowed)
+        {
+            movespeed = originalMovespeed / 2;
+            slowTimer += Time.deltaTime;
+        }
+        if(slowTimer > 1)
+        {
+            movespeed = originalMovespeed;
+            slowed = false;
+            slowTimer = 0;
+        }
+            
+            
+
         if (!meleeUp)
             meleeTimer+= Time.deltaTime;
         if(meleeTimer > attackInterval)
@@ -35,6 +67,9 @@ public class Enemy : MonoBehaviour
             meleeUp = true;
             meleeTimer = 0;
         }
+
+        if (hp < 0)
+            Destroy(gameObject);
     }
 
     public virtual void Attack()

@@ -5,11 +5,11 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     public TurretData data;
-    public int hp;
-    public int atk;
-    public int cost;
-    public float range;
-    private float interval;
+    [HideInInspector] public float hp;
+    [HideInInspector] public float atk;
+    [HideInInspector] public int cost;
+    [HideInInspector] public float range;
+    protected float interval;
     protected GameObject spaceship;
     protected GameObject target = null;
 
@@ -21,22 +21,12 @@ public class Turret : MonoBehaviour
         hp = data.hp;
         atk = data.atk;
         cost = data.cost;
-        range = data.cost;
+        range = data.range;
         interval = data.atkInterval;
         spaceship = GameObject.FindGameObjectWithTag("spaceship");
     }
     void Update()
     {
-        if(shoot)
-        {
-            Shoot();
-            shoot = false;
-        }
-        else
-        {
-            shootTimer += Time.deltaTime;
-        }
-
         if(shootTimer >= interval)
         {
             shootTimer = 0;
@@ -45,14 +35,32 @@ public class Turret : MonoBehaviour
 
         if(target != null)
         {
-            Vector3 lookDir = target.transform.position - this.transform.position;
-            Quaternion rot = Quaternion.LookRotation(target.transform.position);
-            Vector3 rotation = rot.eulerAngles;
-            this.transform.rotation = Quaternion.Euler(0, 0, rotation.z);
+            Vector3 pos = target.transform.position - transform.position;
+            float rotation = Mathf.Atan2(pos.y, pos.x) * Mathf.Rad2Deg;
+
+            float distance = pos.magnitude;
+            Vector2 direction = pos / distance;
+            direction.Normalize();
+            this.transform.rotation = Quaternion.Euler(0, 0, rotation);
         }
+
+        if (shoot)
+        {
+            Shoot();
+            shoot = false;
+        }
+        else
+        {
+            shootTimer += Time.deltaTime;
+        }
+        
     }
     public virtual void Shoot()
     {
         print("NORMAL");
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 }

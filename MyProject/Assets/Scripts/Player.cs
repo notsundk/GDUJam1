@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Ground standingGround;
+
+    [HideInInspector] public Ground standingGround;
+    [SerializeField] private GameObject bullet;
     public int money;
     [SerializeField] private float movespeed;
     private bool openShop = false;
@@ -15,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject[] turretIcons;
     [SerializeField] private GameObject[] Turrets;
     private int selection = 0;
+    private float shootTimer = 0;
+    private bool canShoot = true;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -67,11 +71,11 @@ public class Player : MonoBehaviour
          
             if(Input.mouseScrollDelta.y > 0)
             {
-                selection++;
+                selection--;
             }
             else if(Input.mouseScrollDelta.y < 0)
             {
-                selection--;
+                selection++;
             }
 
             if (selection >= turretIcons.Length)
@@ -102,6 +106,43 @@ public class Player : MonoBehaviour
         {
             Panel.SetActive(false);
             Selector.SetActive(false);
+        }
+        #endregion
+
+        #region Attack
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector3 pos = mouse - transform.position;
+        float rotation = Mathf.Atan2(pos.y, pos.x) * Mathf.Rad2Deg;
+
+        float distance = pos.magnitude;
+        Vector2 direction = pos / distance;
+
+        direction.Normalize();
+        if(Input.GetMouseButton(0) && canShoot)
+        {
+            Vector3 bv = mouse - this.transform.position;
+            bv.Normalize();
+
+            float rotZ = rotation;
+            GameObject tempBullet = Instantiate(bullet);
+            tempBullet.transform.rotation = Quaternion.Euler(0, 0, rotZ + 90);
+            tempBullet.transform.position = this.transform.position;
+            tempBullet.GetComponent<TurretBullet>().dmg = 1;
+            bv *= 5;
+            tempBullet.GetComponent<Rigidbody2D>().velocity = bv;
+
+            canShoot = false;
+        }
+         
+        if(!canShoot)
+        {
+            shootTimer += Time.deltaTime;
+        }
+        if(shootTimer > 0.75f)
+        {
+            shootTimer = 0;
+            canShoot = true;
         }
         #endregion
     }

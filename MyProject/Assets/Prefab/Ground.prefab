@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mask: {fileID: 5970342488177482606}
+  turretOn: 0
+  id: 0
 --- !u!61 &7281223891054170944
 BoxCollider2D:
   m_ObjectHideFlags: 0

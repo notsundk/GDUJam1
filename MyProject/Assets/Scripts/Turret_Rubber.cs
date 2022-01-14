@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret_Pistol : Turret
+public class Turret_Rubber : Turret
 {
-    // Start is called before the first frame update
     public GameObject bullet;
     public override void Shoot()
     {
@@ -34,10 +33,9 @@ public class Turret_Pistol : Turret
             GameObject tempBullet = Instantiate(bullet);
             tempBullet.transform.rotation = Quaternion.Euler(0, 0, rotZ + 90);
             tempBullet.transform.position = this.transform.position;
-            tempBullet.GetComponent<TurretBullet>().dmg = data.atk;
-            bv *= tempBullet.GetComponent<TurretBullet>().bulletSpeed;
+            bv *= tempBullet.GetComponent<Bullet_Rubber>().bulletSpeed;
             tempBullet.GetComponent<Rigidbody2D>().velocity = bv;
         }
-        
+
     }
 }

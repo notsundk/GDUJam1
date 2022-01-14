@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceShip : MonoBehaviour
+public class Turret_Sniper_Crosshair : MonoBehaviour
 {
-    public float hp;
-    // Start is called before the first frame update
+    public GameObject cross;
+    public float lifeSpan;
+    private float timer = 0;
     void Start()
     {
         
@@ -14,7 +15,8 @@ public class SpaceShip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(hp < 0)
+        timer += Time.deltaTime;
+        if(timer > lifeSpan)
         {
             Destroy(gameObject);
         }
