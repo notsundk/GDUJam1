@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - player
+  - spaceship
+  - turret
+  - enemy
   layers:
   - Default
   - TransparentFX

@@ -22,7 +22,7 @@ public class Grid : MonoBehaviour
             {
                 GameObject temp = Instantiate(Ground);
                 temp.transform.parent = this.transform;
-                temp.transform.position = new Vector3(i * groundSizeX - (groundSizeX * columnCount/2), j * groundSizeY - (groundSizeY * rowCount / 2), 0);
+                temp.transform.position = new Vector3(i * groundSizeX - (groundSizeX * (columnCount - 1)/2), j * groundSizeY - (groundSizeY * (rowCount - 1) / 2), 0);
                 temp.GetComponent<Ground>().id = x;
                 x++;
             }

@@ -6,6 +6,7 @@ public class Ground : MonoBehaviour
 {
     [SerializeField] private GameObject mask;
     private bool playerOn = false;
+    public bool turretOn = false;
     private GameObject player;
     public int id = 0;
 
