@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
         #endregion
 
         #region Construct
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(2))
         {
             if (!openShop)
                 openShop = true;
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
             Selector.transform.position = turretIcons[selection].transform.position;
 
             int cost = Turrets[selection].GetComponent<Turret>().data.cost;
-            if (Input.GetMouseButtonDown(2))
+            if (Input.GetMouseButtonDown(1))
             {
                 if(standingGround != null)
                 {
