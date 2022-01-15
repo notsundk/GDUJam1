@@ -96,7 +96,8 @@ public class Player : MonoBehaviour
                     if (!standingGround.turretOn && money >= cost)
                     {
                         money -= cost;
-                        Instantiate(Turrets[selection], standingGround.transform);
+                        GameObject temp = Instantiate(Turrets[selection], standingGround.transform);
+                        temp.GetComponent<Turret>().ground = standingGround;
                         standingGround.turretOn = true;
                     }
                 }

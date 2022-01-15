@@ -16,6 +16,10 @@ public class Turret : MonoBehaviour
     private bool shoot = true;
     private float shootTimer = 0;
 
+    public Ground ground;
+    public GameObject foundation;
+    GameObject temp;
+
     void Start()
     {
         hp = data.hp;
@@ -24,6 +28,10 @@ public class Turret : MonoBehaviour
         range = data.range;
         interval = data.atkInterval;
         spaceship = GameObject.FindGameObjectWithTag("spaceship");
+        temp = Instantiate(foundation);
+        temp.transform.position = transform.position;
+
+
     }
     void Update()
     {
@@ -52,6 +60,13 @@ public class Turret : MonoBehaviour
         else
         {
             shootTimer += Time.deltaTime;
+        }
+
+        if(hp < 0)
+        {
+            ground.turretOn = false;
+            Destroy(temp);
+            Destroy(gameObject);
         }
         
     }

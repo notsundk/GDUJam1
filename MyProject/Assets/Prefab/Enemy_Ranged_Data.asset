@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a54fb2615e3d1ea4dbac508f22c9e40a, type: 3}
-  m_Name: Enemy_Trash_Data
+  m_Name: Enemy_Ranged_Data
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 4
   atk: 5
   movespeed: 0.5
   reward: 3
