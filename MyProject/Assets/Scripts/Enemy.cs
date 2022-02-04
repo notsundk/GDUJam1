@@ -5,15 +5,15 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public EnemyData data;
-    public float hp;
+    [HideInInspector] public float hp;
     [HideInInspector] public float atk;
     [HideInInspector] public float movespeed;
     private float originalMovespeed;
-    public GameObject target;
-    protected Rigidbody2D rb;
+    [HideInInspector] public GameObject target;
+    Rigidbody2D rb;
 
-    protected float attackTimer = 0;
-    protected bool attackUp = true;
+    float meleeTimer = 0;
+    bool meleeUp = true;
     public float attackInterval;
 
     public bool stunned = false;
@@ -21,12 +21,7 @@ public class Enemy : MonoBehaviour
 
     public bool slowed = false;
     private float slowTimer = 0;
-    public GameObject battery;
 
-    float deathTimer;
-
-    Animator anim;
-    int chance;
     void Start()
     {
         hp = data.hp;
@@ -35,14 +30,12 @@ public class Enemy : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("spaceship");
         rb = GetComponent<Rigidbody2D>();
         originalMovespeed = movespeed;
-        anim = GetComponentInChildren<Animator>();
-        chance = Random.Range(0, 100);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!stunned && hp > 0)
+        if(!stunned)
             Attack();
         else
             stunTimer += Time.deltaTime;
@@ -67,34 +60,16 @@ public class Enemy : MonoBehaviour
             
             
 
-        if (!attackUp)
-            attackTimer+= Time.deltaTime;
-        if(attackTimer > attackInterval)
+        if (!meleeUp)
+            meleeTimer+= Time.deltaTime;
+        if(meleeTimer > attackInterval)
         {
-            attackUp = true;
-            attackTimer = 0;
+            meleeUp = true;
+            meleeTimer = 0;
         }
 
-        if (hp <= 0)
-        {
-            anim.SetTrigger("death");
-
-            deathTimer += Time.deltaTime;
-
-            if(deathTimer > 0.067)
-            {
-                FindObjectOfType<Player>().money += data.reward;
-                if (chance > 95)
-                {
-                    GameObject temp = Instantiate(battery);
-                    temp.transform.position = transform.position;
-                }
-                Destroy(gameObject);
-            }
-            
-
-        }
-            
+        if (hp < 0)
+            Destroy(gameObject);
     }
 
     public virtual void Attack()
@@ -104,22 +79,22 @@ public class Enemy : MonoBehaviour
 
         rb.velocity = speed;
     }
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject spaceship = collision.gameObject;
-        if (spaceship.CompareTag("spaceship") && attackUp)
+        if (spaceship.CompareTag("spaceship") && meleeUp)
         {
             spaceship.GetComponent<SpaceShip>().hp -= atk;
-            attackUp = false;
+            meleeUp = false;
         }
     }
-    protected virtual void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         GameObject spaceship = collision.gameObject;
-        if(spaceship.CompareTag("spaceship") && attackUp)
+        if(spaceship.CompareTag("spaceship") && meleeUp)
         {
             spaceship.GetComponent<SpaceShip>().hp -= atk;
-            attackUp = false;
+            meleeUp = false;
         }
     }
 }
