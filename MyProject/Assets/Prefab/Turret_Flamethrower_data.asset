@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Turret_Flamethrower_data
   m_EditorClassIdentifier: 
   hp: 5
-  atk: 0.1
+  atk: 0.3
   cost: 25
   range: 2.2
-  atkInterval: 0.2
+  atkInterval: 0.1

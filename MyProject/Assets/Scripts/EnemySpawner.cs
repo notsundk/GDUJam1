@@ -11,13 +11,13 @@ public class EnemySpawner : MonoBehaviour
     public float respawnTime;
     void Start()
     {
-        respawnTime -= (0.75f * GameManager.Instance.day);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        selection = Random.Range(0, enemy.Length);
+        selection = Random.Range(0, enemy.Length - 1);
 
         if(spawn)
         {

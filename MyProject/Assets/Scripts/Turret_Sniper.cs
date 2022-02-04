@@ -27,8 +27,7 @@ public class Turret_Sniper : Turret
         if (target != null)
         {
             GameObject tempCross;
-            tempCross = Instantiate(crosshair);
-            tempCross.transform.position = target.transform.position;
+            tempCross = Instantiate(crosshair, target.transform);
             target.GetComponent<Enemy>().hp -= atk;
         }
 
